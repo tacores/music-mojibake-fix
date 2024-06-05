@@ -1,0 +1,2 @@
+# music-mojibake-fix
+音楽ファイルをスマホに入れたら文字化けする問題を解決するWindowsアプリ
