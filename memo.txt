@@ -1,0 +1,45 @@
+
+全角チルダ（U+FF5E）を波ダッシュ(U+301C) に変換する。
+
+string originalString = "これはFF5Eの文字（～）が含まれる文字列です。";
+        
+// FULLWIDTH TILDE (U+FF5E) -> WAVE DASH (U+301C)
+string replacedString = originalString.Replace('\uFF5E', '\u301C');
+
+        char fullwidthTilde = '\uFF5E';
+
+        // 文字列にU+FF5Eが含まれているかどうかを判定
+        bool containsFullwidthTilde = text.Contains(fullwidthTilde);
+        
+        
+
+★Album
+★Artists[]
+FirstArtist
+FirstPerformer
+joinedArtists
+joinedPerformers
+★Performers[]
+
+★Title
+
+
+
+        // ローカルのHTMLファイルのパスを指定
+        string htmlFilePath = @"C:\path\to\your\file.html";
+
+        try
+        {
+            // 外部ブラウザでHTMLファイルを開く
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = htmlFilePath,
+                UseShellExecute = true // これにより、ファイルを関連付けられたプログラムで開くことができる
+            });
+        }
+        catch (Exception ex)
+        {
+            // エラーハンドリング
+            Console.WriteLine("Error opening HTML file: " + ex.Message);
+        }
+

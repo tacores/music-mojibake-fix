@@ -1,0 +1,25 @@
+﻿<Window x:Class="music_mojibake_fix.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:music_mojibake_fix"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+
+        <WrapPanel Margin="444,195,0,68" Orientation="Vertical" Background="LightBlue" HorizontalAlignment="Left" Width="334">
+            <Button x:Name="buttonコピー__C_" Content="曲順不正をスキャン" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Height="73" Width="297" RenderTransformOrigin="0.425,1.675" Click="buttonコピー__C__Click"/>
+        </WrapPanel>
+
+        <Button x:Name="button1" Content="フォルダ選択" HorizontalAlignment="Left" Margin="27,44,0,0" VerticalAlignment="Top" Height="54" Width="155" Click="button1_Click"/>
+        <Label x:Name="labelFolderPath" Content="音楽ファイルが入っているフォルダを選択してください" HorizontalAlignment="Left" Margin="187,58,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="label1コピー__C_" Content="⚠️このアプリは音楽ファイルのタグ情報を書き換えます。異常時に復元できるよう、使用前にバックアップをお勧めします。" HorizontalAlignment="Left" Margin="27,13,0,0" VerticalAlignment="Top" Foreground="Red"/>
+        <WrapPanel Margin="27,121,424,68" Orientation="Vertical" Background="LightBlue">
+            <TextBlock TextWrapping="Wrap">このボタンを押すと、修正対象ファイルと内容をブラウザで一覧表示します。</TextBlock>
+            <Button x:Name="button" Content="文字化け対象をスキャン" HorizontalAlignment="Center" VerticalAlignment="Top" Height="73" Width="298" RenderTransformOrigin="0.425,1.675" Click="button_Click"/>
+            <TextBlock TextWrapping="Wrap">修正内容を確認して、問題がなければ修正実行ボタンを押してください。</TextBlock>
+        </WrapPanel>
+
+    </Grid>
+</Window>
