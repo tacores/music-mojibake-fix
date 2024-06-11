@@ -26,16 +26,10 @@ namespace music_mojibake_fix
     public partial class MainWindow : Window
     {
         private List<MojibakeFile> mojibakeFileList;
-        private static string MojibakeFolderName = "mojibake";
 
         public MainWindow()
         {
             InitializeComponent();
-        }
-
-        private void buttonコピー__C__Click(object sender, RoutedEventArgs e)
-        {
-
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -48,15 +42,35 @@ namespace music_mojibake_fix
                 {
                     string selectedPath = folderBrowserDialog.SelectedPath;
                     labelFolderPath.Content = selectedPath;
+                    button.IsEnabled = true;
                 }
             }
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
+        private async void button_Click(object sender, RoutedEventArgs e)
         {
             string folderPath = (string)labelFolderPath.Content;
             var files = Directory.EnumerateFiles(folderPath, "*.*", SearchOption.AllDirectories)
-                    .Where(s => s.EndsWith(".mp3") || s.EndsWith(".m4a"));
+                    .Where(s => s.EndsWith(".mp3") || s.EndsWith(".m4a"))
+                    .ToList();
+
+            progressBar.Maximum = files.Count;
+            progressBar.Value = 0;
+            await Task.Run(() => ScanMojibake(files));
+
+            if (this.mojibakeFileList.Count != 0)
+            {
+                showMojibakeList();
+            } else
+            {
+                System.Windows.MessageBox.Show("文字化けするファイルは1件も見つかりませんでした", "確認", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+        private async void ScanMojibake(List<string> files)
+        {
+            int processedCount = 0;
+
             var mojibakeFileList = new List<MojibakeFile>();
 
             foreach (string file in files)
@@ -76,54 +90,32 @@ namespace music_mojibake_fix
                 {
                     needFix = true;
                     Console.WriteLine("Album " + tfile.Tag.Album);
-                    //tfile.Tag.Album = tfile.Tag.Album.Replace('\uFF5E', '\u301C');
                 }
                 if (tfile.Tag.Title != null && tfile.Tag.Title.Contains(fullwidthTilde))
                 {
                     needFix = true;
                     Console.WriteLine("title " + tfile.Tag.Title);
-                    //tfile.Tag.Title = tfile.Tag.Title.Replace('\uFF5E', '\u301C');
                 }
                 // Artistsは非推奨でPerformersを使えという警告が出るが、Performersはセッターの実装が空なので使えないと思われる。
                 if (tfile.Tag.Artists != null && tfile.Tag.Artists[0] != null && tfile.Tag.Artists[0].Contains(fullwidthTilde))
                 {
                     needFix = true;
                     Console.WriteLine("Artists " + tfile.Tag.Artists[0]);
-                    // Artistsのセッターの実装上、配列要素を部分的に更新できないので、要素1個の配列に丸ごと置き換える。
-                    string replacedArtist = tfile.Tag.Artists[0].Replace('\uFF5E', '\u301C');
-                    //tfile.Tag.Artists = new string[] { replacedArtist };
                 }
-                //tfile.Save();
 
-                if(needFix)
+                if (needFix)
                 {
                     mojibakeFileList.Add(mojibakeFile);
                 }
+
+                processedCount++;
+                // プログレスバーの更新はUIスレッドで行う
+                Dispatcher.Invoke(() =>
+                {
+                    progressBar.Value = processedCount;
+                });
             }
             this.mojibakeFileList = mojibakeFileList;
-
-            if (this.mojibakeFileList.Count != 0)
-            {
-                //string jsonId = outputJson(this.mojibakeFileList);
-                showMojibakeList();
-            }
-        }
-
-        private string outputJson(List<MojibakeFile> fileList)
-        {
-            string jsonString = JsonSerializer.Serialize(fileList);
-            
-            string jsonId = DateTime.Now.ToString("yyyyMMddHHmmss");
-
-            // フォルダが存在しない場合は作成
-            if (!Directory.Exists(MojibakeFolderName))
-            {
-                Directory.CreateDirectory(MojibakeFolderName);
-            }
-
-            // ファイルに書き込み
-            File.WriteAllText(MojibakeFolderName + "\\" + jsonId + ".json", jsonString);
-            return jsonId;
         }
 
         private void showMojibakeList()

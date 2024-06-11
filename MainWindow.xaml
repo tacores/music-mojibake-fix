@@ -5,21 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:music_mojibake_fix"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="スマホ音楽文字化け修正" Height="450" Width="800">
     <Grid>
-
-        <WrapPanel Margin="444,195,0,68" Orientation="Vertical" Background="LightBlue" HorizontalAlignment="Left" Width="334">
-            <Button x:Name="buttonコピー__C_" Content="曲順不正をスキャン" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Center" Height="73" Width="297" RenderTransformOrigin="0.425,1.675" Click="buttonコピー__C__Click"/>
-        </WrapPanel>
-
-        <Button x:Name="button1" Content="フォルダ選択" HorizontalAlignment="Left" Margin="27,44,0,0" VerticalAlignment="Top" Height="54" Width="155" Click="button1_Click"/>
-        <Label x:Name="labelFolderPath" Content="音楽ファイルが入っているフォルダを選択してください" HorizontalAlignment="Left" Margin="187,58,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="label1コピー__C_" Content="⚠️このアプリは音楽ファイルのタグ情報を書き換えます。異常時に復元できるよう、使用前にバックアップをお勧めします。" HorizontalAlignment="Left" Margin="27,13,0,0" VerticalAlignment="Top" Foreground="Red"/>
-        <WrapPanel Margin="27,121,424,68" Orientation="Vertical" Background="LightBlue">
-            <TextBlock TextWrapping="Wrap">このボタンを押すと、修正対象ファイルと内容をブラウザで一覧表示します。</TextBlock>
-            <Button x:Name="button" Content="文字化け対象をスキャン" HorizontalAlignment="Center" VerticalAlignment="Top" Height="73" Width="298" RenderTransformOrigin="0.425,1.675" Click="button_Click"/>
-            <TextBlock TextWrapping="Wrap">修正内容を確認して、問題がなければ修正実行ボタンを押してください。</TextBlock>
-        </WrapPanel>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" x:Name="button1" Content="フォルダ選択" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Height="40" Width="150" Click="button1_Click" />
+        <Label Grid.Row="0" x:Name="labelFolderPath" Content="音楽ファイル（mp3, m4a）が入っているフォルダを選択してください" HorizontalAlignment="Left" Margin="160,15,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Grid Grid.Row="1">
+            <WrapPanel Orientation="Vertical" Background="WhiteSmoke" Margin="10,30,10,0">
+                <Label  FontSize="20" FontWeight="Bold" HorizontalAlignment="Center">文字化け修正</Label>
+                <Label>全角チルダ（U+FF5E）を波ダッシュ(U+301C) に変換します。</Label>
+                <Label>スキャン後に確認画面が開きます。</Label>
+                <Image  Source="images/mojibake-image.png" Stretch="Uniform" Margin="10, 10" Height="130"/>
+                <Button  x:Name="button" Content="スキャン" IsEnabled="false" HorizontalAlignment="Center" VerticalAlignment="Top" Height="40" Width="150" Click="button_Click" />
+                <ProgressBar  x:Name="progressBar" Height="20" VerticalAlignment="Top" Margin="10"/>
+            </WrapPanel>
+        </Grid>
     </Grid>
 </Window>
